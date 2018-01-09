@@ -111,10 +111,12 @@ export class DashboardSrv {
       return this.showSaveModal();
     }
 
+    this.closeAddPanel();
     return this.save(this.dash.getSaveModelClone(), options);
   }
 
   showSaveAsModal() {
+    this.closeAddPanel();
     this.$rootScope.appEvent('show-modal', {
       templateHtml: '<save-dashboard-as-modal dismiss="dismiss()"></save-dashboard-as-modal>',
       modalClass: 'modal--narrow',
@@ -122,6 +124,7 @@ export class DashboardSrv {
   }
 
   showSaveModal() {
+    this.closeAddPanel();
     this.$rootScope.appEvent('show-modal', {
       templateHtml: '<save-dashboard-modal dismiss="dismiss()"></save-dashboard-modal>',
       modalClass: 'modal--narrow',
@@ -147,6 +150,13 @@ export class DashboardSrv {
       }
       return res;
     });
+  }
+
+  closeAddPanel() {
+    const firstPanel = this.dash.panels[0];
+    if (firstPanel && firstPanel.type === 'add-panel') {
+      this.dash.removePanel(firstPanel);
+    }
   }
 }
 
